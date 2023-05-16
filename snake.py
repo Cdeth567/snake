@@ -1,5 +1,6 @@
 import pygame
 import random
+import sys
 import tkinter as tk
 from tkinter import messagebox
 
@@ -45,27 +46,29 @@ class Snake(object):
         self.dirnx = 0
         self.dirny = 1
 
-    def move(self):
+    def move(self, screen):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                # pygame.quit()
+                sys.exit()
 
-            keys = pygame.key.get_pressed()
+            # keys = pygame.key.get_pressed()
 
-            for key in keys:
-                if keys[pygame.K_LEFT]:
+            # for key in keys:
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
                     self.dirnx = -1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
-                elif keys[pygame.K_RIGHT]:
+                elif event.key == pygame.K_RIGHT:
                     self.dirnx = 1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
-                elif keys[pygame.K_UP]:
+                elif event.key == pygame.K_UP:
                     self.dirnx = 0
                     self.dirny = -1
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
-                elif keys[pygame.K_DOWN]:
+                elif event.key == pygame.K_DOWN:
                     self.dirnx = 0
                     self.dirny = 1
                     self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
@@ -166,7 +169,7 @@ def main():
     while flag:
         pygame.time.delay(50)
         clock.tick(10)
-        s.move()
+        s.move(screen=win)
         if s.body[0].pos == snack.pos:
             s.addCube()
             snack = Cube(randomSnack(rows, s), color=(random.randrange(255), random.randrange(255), random.randrange(255)))
